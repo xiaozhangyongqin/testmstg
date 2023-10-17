@@ -12,7 +12,7 @@ from torchsummary import summary
 import argparse
 import logging
 from utils import StandardScaler, DataLoader, masked_mae_loss, masked_mape_loss, masked_mse_loss, masked_rmse_loss
-from M1 import MegaCRN
+from M1 import MSTGRN
 
 
 def print_model(model):
@@ -28,13 +28,13 @@ def print_model(model):
 
 def get_model():
     # before
-    model = MegaCRN(num_nodes=args.num_nodes, input_dim=args.input_dim, output_dim=args.output_dim,
+    model = MSTGRN(num_nodes=args.num_nodes, input_dim=args.input_dim, output_dim=args.output_dim,
                     horizon=args.horizon,
                     rnn_units=args.rnn_units, num_layers=args.num_rnn_layers, mem_num=args.mem_num,
                     mem_dim=args.mem_dim,
                     cheb_k=args.max_diffusion_step, cl_decay_steps=args.cl_decay_steps,
                     use_curriculum_learning=args.use_curriculum_learning).to(device)
-    # model = MegaCRN(num_nodes=args.num_nodes, input_dim=args.input_dim, output_dim=args.output_dim, horizon=args.horizon,
+    # model = MSTGRN(num_nodes=args.num_nodes, input_dim=args.input_dim, output_dim=args.output_dim, horizon=args.horizon,
     #                 rnn_units=args.rnn_units, num_layers=args.num_rnn_layers, mem_num=args.num_nodes, mem_dim=args.mem_dim,
     #                 cheb_k = args.max_diffusion_step, cl_decay_steps=args.cl_decay_steps, use_curriculum_learning=args.use_curriculum_learning).to(device)
     return model
@@ -88,7 +88,7 @@ def evaluate(model, mode):
             maes.append(masked_mae_loss(y_pred, y_true).item())
             mapes.append(masked_mape_loss(y_pred, y_true).item())
             mses.append(masked_mse_loss(y_pred, y_true).item())
-            # Important for MegaCRN model to let T come first.
+            # Important for MSTGRN model to let T come first.
             y_true, y_pred = y_true.permute(1, 0, 2, 3), y_pred.permute(1, 0, 2, 3)
             # print(masked_mae_loss(y_pred[2:3], y_true[2:3]))
             l_3.append(masked_mae_loss(y_pred[2:3], y_true[2:3]).item())
