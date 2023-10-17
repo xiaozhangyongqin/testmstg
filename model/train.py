@@ -204,8 +204,8 @@ step = list(range(1, 201))
 #########################################################################################
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', type=str,
-                    choices=['METRLA', 'PEMSBAY', 'PEMSD4', 'PEMSD8', 'PEMSD3', 'PEMSD7'],
-                    default='PEMSD4',
+                    choices=['METRLA', 'PEMSBAY', 'PEMS04', 'PEMS08', 'PEMS03', 'PEMS07'],
+                    default='PEMS04',
                     help='which dataset to run')
 parser.add_argument('--trainval_ratio', type=float, default=0.8,
                     help='the ratio of training and validation data among the total')
@@ -247,21 +247,18 @@ if args.dataset == 'METRLA':
 elif args.dataset == 'PEMSBAY':
     data_path = f'../{args.dataset}/pems-bay.h5'
     args.num_nodes = 325
-elif args.dataset == 'PEMSD4':
+elif args.dataset == 'PEMS04':
     data_path = f'../{args.dataset}/pemsd04.h5'
     args.num_nodes = 307
-elif args.dataset == 'PEMSD8':
+elif args.dataset == 'PEMS08':
     data_path = f'../{args.dataset}/pemsd08.h5'
     args.num_nodes = 170
-elif args.dataset == 'PEMSD3':
+elif args.dataset == 'PEMS03':
     data_path = f'../{args.dataset}/pemsd03.h5'
     args.num_nodes = 358
-elif args.dataset == 'PEMSD7':
+elif args.dataset == 'PEMS07':
     data_path = f'../{args.dataset}/pemsd07.h5'
     args.num_nodes = 883
-elif args.dataset == 'PEMSD8622':
-    data_path = f'../{args.dataset}/pemsd08.h5'
-    args.num_nodes = 170
 else:
     pass  # including more datasets in the future
 
