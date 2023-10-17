@@ -1,1 +1,1 @@
-# MegaNet
+# MSTGRN
