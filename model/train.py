@@ -12,7 +12,7 @@ from torchsummary import summary
 import argparse
 import logging
 from utils import StandardScaler, DataLoader, masked_mae_loss, masked_mape_loss, masked_mse_loss, masked_rmse_loss
-from M1 import MSTGRN
+from mgrn import MSTGRN
 
 
 def print_model(model):
@@ -259,7 +259,7 @@ elif args.dataset == 'PEMS07':
 else:
     pass  # including more datasets in the future
 
-model_name = 'M1'
+model_name = 'mgrn'
 timestring = time.strftime('%Y%m%d%H%M%S', time.localtime())
 path = f'../save/{args.dataset}_{model_name}_{timestring}'
 logging_path = f'{path}/{model_name}_{timestring}_logging.txt'
