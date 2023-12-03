@@ -160,31 +160,6 @@ class MSTGRN(nn.Module):
     def compute_sampling_threshold(self, batches_seen):
         return self.cl_decay_steps / (self.cl_decay_steps + np.exp(batches_seen / self.cl_decay_steps))
 
-    # def construct_memory(self):
-    #     memory_dict = nn.ParameterDict()
-    #     memory_dict['Memory'] = nn.Parameter(torch.randn(self.mem_num, self.mem_dim), requires_grad=True)  # (M, d)
-    #     memory_dict['Wq'] = nn.Parameter(torch.randn(self.rnn_units, self.mem_dim),
-    #                                      requires_grad=True)  # project to query
-    #     memory_dict['We1'] = nn.Parameter(torch.randn(self.num_nodes, self.mem_num),
-    #                                       requires_grad=True)  # project memory to embedding
-    #     memory_dict['We2'] = nn.Parameter(torch.randn(self.num_nodes, self.mem_num),
-    #                                       requires_grad=True)  # project memory to embedding
-    #     for param in memory_dict.values():
-    #         nn.init.xavier_normal_(param)
-    #     return memory_dict
-
-    # def query_memory(self, h_t: torch.Tensor):
-    #     query = h_t
-    #     # self.memory['Memory'] = nn.Parameter(self.att_memory(self.memory['Memory'].unsqueeze(0)).squeeze(0))
-    #     att_score = torch.softmax(torch.matmul(query, self.memory['Memory'].t()), dim=-1)  # alpha: (B, N, M)
-    #     value = torch.matmul(att_score, self.memory['Memory'])  # (B, N, d)
-    #     # 获取top 2 相关性最高的
-    #     _, ind = torch.topk(att_score, k=3, dim=-1)
-    #     pos = self.memory['Memory'][ind[:, :, 0]]  # B, N, d
-    #     neg1 = self.memory['Memory'][ind[:, :, 1]]  # B, N, d
-    #     neg2 = self.memory['Memory'][ind[:, :, 1]]  # B, N, d
-    #     return value, query, pos, neg1, neg2
-
     def construct_memory1(self):
         memory_dict = nn.ParameterDict()
         memory_dict['Memory'] = nn.Parameter(torch.randn(self.mem_num, self.mem_dim*2), requires_grad=True)  # (M, d)
@@ -197,13 +172,12 @@ class MSTGRN(nn.Module):
         return memory_dict
 
     def query_memory1(self, h_t: torch.Tensor):
-        # query = torch.matmul(h_t, self.memory['Wq'])     # (B, N, d)
         query = h_t
         # self.memory['Memory'] = nn.Parameter(self.att_memory(self.memory['Memory'].unsqueeze(0)).squeeze(0))
         att_score = torch.softmax(torch.matmul(query, self.memory1['Memory'].t()), dim=-1)  # alpha: (B, N, M)
         value = torch.matmul(att_score, self.memory1['Memory'])  # (B, N, d)
         # 获取top 2 相关性最高的
-        _, ind = torch.topk(att_score, k=3, dim=-1)
+        _, ind = torch.topk(att_score, k=2, dim=-1)
         pos = self.memory1['Memory'][ind[:, :, 0]]  # B, N, d
         neg1 = self.memory1['Memory'][ind[:, :, 1]]  # B, N, d
         neg2 = self.memory1['Memory'][ind[:, :, 1]]  # B, N, d
