@@ -34,9 +34,6 @@ def get_model():
                     mem_dim=args.mem_dim,
                     cheb_k=args.max_diffusion_step, cl_decay_steps=args.cl_decay_steps,
                     use_curriculum_learning=args.use_curriculum_learning).to(device)
-    # model = MSTGRN(num_nodes=args.num_nodes, input_dim=args.input_dim, output_dim=args.output_dim, horizon=args.horizon,
-    #                 rnn_units=args.rnn_units, num_layers=args.num_rnn_layers, mem_num=args.num_nodes, mem_dim=args.mem_dim,
-    #                 cheb_k = args.max_diffusion_step, cl_decay_steps=args.cl_decay_steps, use_curriculum_learning=args.use_curriculum_learning).to(device)
     return model
 
 
@@ -225,7 +222,7 @@ parser.add_argument("--loss", type=str, default='mask_mae_loss', help="mask_mae_
 parser.add_argument('--lamb', type=float, default=0.01, help='lamb value for separate loss')
 parser.add_argument('--lamb1', type=float, default=0.01, help='lamb1 value for compact loss')
 parser.add_argument("--epochs", type=int, default=200, help="number of epochs of training")
-parser.add_argument("--patience", type=int, default=30, help="patience used for early stop")
+parser.add_argument("--patience", type=int, default=20, help="patience used for early stop")
 parser.add_argument("--batch_size", type=int, default=64, help="size of the batches")
 parser.add_argument("--lr", type=float, default=0.01, help="base learning rate")
 parser.add_argument("--steps", type=eval, default=[50, 100, 120], help="steps")
